@@ -1,0 +1,11 @@
+#!/usr/bin/ruby -wU
+
+trap('INT') { exit }
+
+require_relative 'lib/rubar'
+
+rubar = Rubar.new
+rubar.run
+
+# Run indefinitely
+sleep
