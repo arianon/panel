@@ -40,7 +40,7 @@ class MPC
 
   %i(repeat random single consume).each do |mode|
     define_method(:"#{mode}?") do
-      @mpc.include? '#{mode}: on' 
+      @mpc.include? "#{mode}: on"
     end
   end
 
