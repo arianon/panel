@@ -1,8 +1,6 @@
 #!/usr/bin/ruby -wU
 # coding: utf-8
 
-require_relative '../mkbar'
-
 module Bandwidth
   MAXDOWN = 172_000.0
   MAXUP = 65_536.0
