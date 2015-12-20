@@ -6,11 +6,11 @@ require_relative 'utils'
 
 class Mkbar
   def initialize(opts = {})
-    @char1   = opts.fetch :char1, '━'
-    @char2   = opts.fetch :char2, '━'
+    @char1      = opts.fetch :char1, '━'
+    @char2      = opts.fetch :char2, '━'
     @foreground = opts.fetch :foreground, Color.foreground
     @background = opts.fetch :background, Color.black
-    @size    = opts.fetch :size, 20
+    @size       = opts.fetch :size, 20
   end
 
   # Forgive calculation errors.
