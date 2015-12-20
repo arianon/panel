@@ -40,14 +40,3 @@ class Mkbar
     bar
   end
 end
-
-if __FILE__ == $PROGRAM_NAME
-  trap('INT') { exit }
-
-  @bar = Mkbar.new
-
-  0.step(100, 5) do |x|
-
-    puts @bar[x]
-  end
-end

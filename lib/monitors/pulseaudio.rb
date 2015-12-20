@@ -33,15 +33,3 @@ class PulseAudio
     "#{@volume}:#{@muted ? 'on' : 'off'}"
   end
 end
-
-if __FILE__ == $PROGRAM_NAME
-  trap('INT') { exit }
-
-  @pa = PulseAudio.new
-
-  @pa.monitor do
-    puts @pa
-  end
-
-  sleep
-end

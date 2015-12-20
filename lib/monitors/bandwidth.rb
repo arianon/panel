@@ -51,15 +51,3 @@ module Bandwidth
     end
   end
 end
-
-if __FILE__ == $PROGRAM_NAME
-  trap('INT') { exit }
-  @bar = Mkbar.new
-
-  Bandwidth.monitor do |bw|
-    up, down = bw.percentage
-    puts "↑ #{@bar[up]} ↓ #{@bar[down]}"
-  end
-
-  sleep
-end
