@@ -13,12 +13,12 @@ class PulseAudio
 
   def monitor
     Thread.new do
-      yield(self)
+      yield
       open('| pactl subscribe change').each_line do |line|
         # Respond only to sink changes
         if line.include? 'sink'
           update!
-          yield(self)
+          yield
         end
       end
     end
