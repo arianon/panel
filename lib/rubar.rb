@@ -71,6 +71,16 @@ class Rubar
     draw_widget(opts)
   end
 
+  def date_widget
+    opts = {
+      icon: Icon.date,
+      background: Color.red,
+      text: Time.now.strftime('%A, %d/%m')
+    }
+
+    draw_widget(opts)
+  end
+
   def cpu_widget
     opts = {
       icon: Icon.cpu,
@@ -122,6 +132,7 @@ class Rubar
   def update!
     @mutex.synchronize do
       align :left do
+        date_widget
         time_widget
       end
 
