@@ -34,7 +34,7 @@ class MPC
 
   %i(playing paused stopped).each do |state|
     define_method(:"#{state}?") do
-      status == state 
+      status == state
     end
   end
 
