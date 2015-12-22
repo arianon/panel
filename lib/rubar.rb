@@ -11,15 +11,12 @@ require_relative 'monitors/memory'
 require_relative 'monitors/cpu'
 
 class Rubar
-  def initialize
-    opts = CONFIG[:lemonbar]
+  def initialize(foreground: Color.foreground,
+                 background: Color.background,
+                 fonts: [])
 
-    command = '| lemonbar ' \
-              "-F '#{opts.fetch(:foreground, Color.foreground)}' " \
-              "-B '#{opts.fetch(:background, Color.background)}' " <<
-              opts[:fonts].map { |f| "-f #{f}" }.join(' ')
-
-    @bar = open command, 'w+'
+    @bar = open format("| lemonbar -F '%s' -B '%s' -f %s -f %s",
+                       foreground, background, *fonts), 'w+'
 
     @pulse = PulseAudio.new
     @mpc = MPC.new
@@ -52,11 +49,8 @@ class Rubar
   end
 
   # Widget
-  def draw_widget(opts = {})
-    icon       = opts.fetch :icon, ' WIDGET '
-    background = opts.fetch :background, Color.blue
-    foreground = opts.fetch :foreground, Color.background
-    text       = opts.fetch :text, '<PLACEHOLDER>'
+  def draw_widget(icon: ' WIDGET ',text: '<PLACEHOLDER>',
+                  background: Color.blue, foreground: Color.background)
 
     draw "#{Util.wrap icon, foreground, background} #{text} "
   end
