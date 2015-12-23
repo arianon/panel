@@ -1,35 +1,58 @@
-:lemonbar:
-  # :background: '#4400000'
-  # :foreground: '#FF2b303b'
-  :fonts:
+# Colors definitions.
+colors:
+  background:  &background  '#14181F'
+  black:       &black       '#2B303B'
+  blue:        &blue        '#8FA1B3'
+  cyan:        &cyan        '#96B5B4'
+  foreground:  &foreground  '#B7BDCC'
+  green:       &green       '#A3BE8C'
+  magenta:     &magenta     '#B48EAD'
+  red:         &red         '#BF616A'
+  white:       &white       '#B9BBBE'
+  yellow:      &yellow      '#EBCB8B'
+
+# Lemonbar's configuration
+lemonbar:
+  foreground: *foreground
+  background: *background
+  format: left|center|right
+  fonts:
     - -lucy-tewi-medium-r-normal--11-90-75-75-m-60-iso10646-1
     - -wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1
+  clickable_areas: 20
 
-:mkbar:
-   # :char1:   '|'
-   # :char2:   '>'
-   :size:    16
+# Mkbar
+mkbar:
+  char1: ━
+  char2: ━
+  size: 20
+  foreground: *foreground
+  background: *background
 
-:colors:
-  :background: 0x14181F
-  :black:      0x2B303B
-  :blue:       0x8FA1B3
-  :cyan:       0x96B5B4
-  :foreground: 0xB7BDCC
-  :green:      0xA3BE8C
-  :magenta:    0xB48EAD
-  :red:        0xBF616A
-  :white:      0xB9BBBE
-  :yellow:     0xEBCB8B
+# Widgets
+time:
+  icon: 
+  color: &blue
+  format: "%H:%M:%S"
+  rate: 1
 
-:icons:
-  :clock:   
-  :date:    
-  :cpu:     
-  :memory:  
-  :netup:   
-  :netdown: 
-  :music:   
-  :paused:  
-  :volume:  
-  :muted:   
+music:
+  icon: [,]
+  color: [*blue, *red]
+
+volume:
+  bar: true
+  icon: [, ]
+  color: [*green, *red]
+
+memory:
+  bar: true
+  icon: 
+  color: *cyan
+  rate: 1
+
+cpu:
+  bar: true
+  icon: 
+  color: *yellow
+  rate: 1
