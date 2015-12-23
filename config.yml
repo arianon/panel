@@ -37,13 +37,21 @@ time:
   rate: 1
 
 music:
-  icon: [,]
-  color: [*blue, *red]
+  icons: [,]
+  colors: [*blue, *red]
+  buttons:
+    1: mpc -q toggle
+    4: mpc -q prev
+    5: mpc -q next
 
 volume:
   bar: true
-  icon: [, ]
-  color: [*green, *red]
+  icons: [, ]
+  colors: [*green, *red]
+  buttons:
+    1: pactl set-sink-mute 0 toggle
+    4: pactl set-sink-volume 0 +5%
+    5: pactl set-sink-volume 0 -5%
 
 memory:
   bar: true
