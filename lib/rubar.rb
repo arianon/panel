@@ -1,40 +1,57 @@
 Thread.abort_on_exception = true
 
 require_relative 'config'
-require_relative 'mkbar'
-require_relative 'utils'
 
-require_relative 'monitors/mpd'
-require_relative 'monitors/pulseaudio'
-require_relative 'monitors/bandwidth'
-require_relative 'monitors/memory'
-require_relative 'monitors/cpu'
+require_relative 'widgets/clock'
+require_relative 'widgets/cpu'
+require_relative 'widgets/memory'
+require_relative 'widgets/mpc'
+require_relative 'widgets/pulseaudio'
 
 class Rubar
-  def initialize(foreground: Color.foreground,
-                 background: Color.background,
-                 fonts: [])
+  C = CONFIG.lemonbar
 
-    @bar = open format("| lemonbar -F '%s' -B '%s' -f %s -f %s",
-                       foreground, background, *fonts), 'w+'
+  def initialize
+    cmd = '| lemonbar '
+    cmd << "-F '#{C.foreground}' -B '#{C.background}' "
+    cmd << C.fonts.map { |f| "-f '#{f}' " }.join
+    cmd << "-a #{C.clickable_areas}"
 
-    @pulse = PulseAudio.new
-    @mpc = MPC.new
-    @mkbar = Mkbar.new(CONFIG[:mkbar])
+    @bar = open(cmd, 'w+')
+
+    @clock = Clock.new
+    @cpu = CPU.new
+    @memory = Memory.new
+    @music = MPC.new
+    @volume = PulseAudio.new
+
+    @widgets = [@clock, @cpu, @memory, @music, @volume]
 
     @mutex = Mutex.new
-
-    @cpu_current_percentage = 0
-    @mem_current_percentage = 0
   end
 
-  # Helpers
-  def draw(stuff)
-    @bar.write stuff
+  def update!
+    @mutex.synchronize do
+      align :left do
+        draw @music
+      end
+
+      align :center do
+        draw @clock
+      end
+
+      align :right do
+        draw @cpu
+        draw @memory
+        draw @volume
+      end
+
+      draw "\n"
+    end
   end
 
-  def space(n = 1)
-    draw ' ' * n
+  def draw(s)
+    @bar.write "#{s}"
   end
 
   def align(where)
@@ -42,124 +59,12 @@ class Rubar
     yield
   end
 
-  def respond_to(buttons)
-    buttons.each_pair { |btn, cmd| draw "%{A#{btn}:#{cmd}:}" }
-    yield
-    draw '%{A}' * buttons.length
-  end
-
-  # Widget
-  def draw_widget(icon: ' WIDGET ',text: '<PLACEHOLDER>',
-                  background: Color.blue, foreground: Color.background)
-
-    draw "#{Util.wrap icon, foreground, background} #{text} "
-  end
-
-  def time_widget
-    opts = {
-      icon: Icon.clock,
-      background: Color.magenta,
-      text: Time.now.strftime('%I:%M:%S %p')
-    }
-
-    draw_widget(opts)
-  end
-
-  def date_widget
-    opts = {
-      icon: Icon.date,
-      background: Color.red,
-      text: Time.now.strftime('%A, %d/%m')
-    }
-
-    draw_widget(opts)
-  end
-
-  def cpu_widget
-    opts = {
-      icon: Icon.cpu,
-      background: Color.yellow,
-      text: @mkbar[@cpu_current_percentage,
-                   Util.color_by_percentage(@cpu_current_percentage)]
-    }
-
-    draw_widget(opts)
-  end
-
-  def mem_widget
-    opts = {
-      icon: Icon.memory,
-      background: Color.cyan,
-      text: @mkbar[@mem_current_percentage,
-                   Util.color_by_percentage(@mem_current_percentage)]
-    }
-
-    draw_widget(opts)
-  end
-
-  def music_widget
-    return if @mpc.stopped?
-
-    opts = {
-      icon: @mpc.playing? ? Icon.music : Icon.paused,
-      background: @mpc.playing? ? Color.blue : Color.red,
-      text: @mpc.song
-    }
-
-    respond_to(1 => 'mpc -q toggle',
-               4 => 'mpc -q prev',
-               5 => 'mpc -q next') { draw_widget(opts) }
-  end
-
-  def volume_widget
-    opts = {
-      icon: @pulse.muted? ? Icon.muted : Icon.volume,
-      background: @pulse.muted? ? Color.red : Color.green,
-      text: @mkbar[@pulse.volume]
-    }
-
-    respond_to(1 => 'pactl set-sink-mute 0 toggle',
-               4 => 'pactl set-sink-volume 0 +5%',
-               5 => 'pactl set-sink-volume 0 -5%') { draw_widget(opts) }
-  end
-
-  def update!
-    @mutex.synchronize do
-      align :left do
-        date_widget
-        time_widget
-      end
-
-      align :center do
-        music_widget
-      end
-
-      align :right do
-        cpu_widget
-        mem_widget
-        volume_widget
-      end
-
-      draw "\n"
-    end
-  end
-
   def run
-    Memory.monitor(3) do |m|
-      @mem_current_percentage = m.percentage
-      update!
+    @widgets.each do |widget|
+      Thread.new { widget.monitor { update! } }
     end
 
-    Cpu.monitor(1) do |perc|
-      @cpu_current_percentage = perc
-      update!
-    end
-
-    @pulse.monitor { update! }
-    @mpc.monitor { update! }
-
-    Thread.new do
-      @bar.each_line { |n| system n }
-    end
+    Thread.new { @bar.each_line { |n| system n } }
+    sleep
   end
 end
