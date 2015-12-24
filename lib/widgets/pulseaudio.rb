@@ -16,7 +16,7 @@ class PulseAudio
   end
 
   def volume
-    "#{@volume}%"
+    "#{@volume}% "
   end
 
   def to_s

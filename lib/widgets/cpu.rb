@@ -10,7 +10,7 @@ class CPU
   end
 
   def to_s
-    "#{@icon} #{@perc.round}%"
+    "#{@icon} #{@perc.round}% "
   end
 
   def monitor

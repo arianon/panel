@@ -13,7 +13,7 @@ class Memory
   end
 
   def to_s
-    "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-} #{percentage.to_i}%"
+    "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-} #{percentage.to_i}% "
   end
 
   def free

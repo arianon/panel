@@ -15,6 +15,6 @@ class Clock
   end
 
   def to_s
-    @icon + Time.now.strftime(C.format)
+    @icon + Time.now.strftime(C.format) + ' '
   end
 end
