@@ -51,3 +51,8 @@ class MPC
     end
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+  mpc = MPC.new
+  mpc.monitor { puts mpc }
+end

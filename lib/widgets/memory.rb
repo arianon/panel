@@ -1,4 +1,5 @@
 require_relative '../config'
+require_relative 'helpers/mkbar'
 
 class Memory
   REGEX = /^(?:MemTotal|MemFree|Buffers|Cached):\s+(\d+) kB/
@@ -36,4 +37,9 @@ class Memory
       sleep C.reload
     end
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  memory = Memory.new
+  memory.monitor { puts memory }
 end

@@ -1,4 +1,5 @@
 require_relative '../config'
+require_relative 'helpers/mkbar'
 
 class ALSA
   SCONTROL = 'Master'
@@ -32,7 +33,12 @@ class ALSA
   def monitor
     loop do
       yield
-      sleep C.reload
+      sleep C.reload || 1
     end
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  alsa = ALSA.new
+  alsa.monitor { puts alsa }
 end

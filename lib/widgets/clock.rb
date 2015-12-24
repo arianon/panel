@@ -18,3 +18,8 @@ class Clock
     @icon + Time.now.strftime(C.format)
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+  clock = Clock.new
+  clock.monitor { puts clock }
+end

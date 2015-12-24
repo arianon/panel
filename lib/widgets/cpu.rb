@@ -35,3 +35,8 @@ class CPU
     @total = @used + tmp[3]  # total = used+idle
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+  cpu = CPU.new
+  cpu.monitor { puts cpu }
+end

@@ -1,4 +1,5 @@
 require_relative '../config'
+require_relative 'helpers/mkbar'
 
 class PulseAudio
   C = CONFIG.volume
@@ -38,4 +39,9 @@ class PulseAudio
       end
     end
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  pulse = PulseAudio.new
+  pulse.monitor { puts pulse }
 end
