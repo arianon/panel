@@ -30,11 +30,11 @@ mkbar:
   background: *background
 
 # Widgets
-time:
+clock:
   icon: 
   color: *blue
   format: "%H:%M:%S"
-  rate: 1
+  reload: 1
 
 music:
   icons: [,]
