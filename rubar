@@ -2,11 +2,6 @@
 
 trap('INT') { exit }
 
-require_relative 'lib/config'
 require_relative 'lib/rubar'
 
-rubar = Rubar.new(CONFIG[:lemonbar])
-rubar.run
-
-# Run indefinitely
-sleep
+Rubar.new.run
