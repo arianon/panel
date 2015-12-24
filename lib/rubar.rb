@@ -33,11 +33,11 @@ class Rubar
   def update!
     @mutex.synchronize do
       align :left do
-        draw @music
+        draw @clock
       end
 
       align :center do
-        draw @clock
+        draw @music
       end
 
       align :right do
