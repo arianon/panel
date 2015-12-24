@@ -1,4 +1,5 @@
 require_relative '../config'
+require_relative 'helpers/mkbar'
 
 class CPU
   C = CONFIG.cpu
@@ -10,7 +11,11 @@ class CPU
   end
 
   def to_s
-    "#{@icon} #{@perc.round}% "
+    if C.bar
+      "#{@icon} #{Mkbar[@perc]} "
+    else
+      "#{@icon} #{@perc.round}% "
+    end
   end
 
   def monitor

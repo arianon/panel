@@ -16,7 +16,7 @@ class PulseAudio
   end
 
   def volume
-    "#{@volume}% "
+    C.bar ? Mkbar[@volume] : "#{@volume}%"
   end
 
   def to_s
@@ -24,7 +24,7 @@ class PulseAudio
     buttons = C.buttons.to_h
 
     widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
-    widget << icon << volume
+    widget << icon << volume << ' '
     widget << '%{A}' * buttons.size
   end
 
