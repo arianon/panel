@@ -7,7 +7,7 @@ class PulseAudio
     pactl = `pactl list sinks`
     @volume = pactl[/[0-9]+%/].to_i
     @muted = pactl[/Mute: (yes|no)/, 1] == 'yes'
-    system "pactl set-sink-volume 0 100%" if @volume > 100
+    system 'pactl set-sink-volume 0 100%' if @volume > 100
   end
 
   def icon
@@ -16,7 +16,7 @@ class PulseAudio
   end
 
   def volume
-      "#{@volume}%"
+    "#{@volume}%"
   end
 
   def to_s
