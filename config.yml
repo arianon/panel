@@ -55,12 +55,14 @@ pulseaudio:
 
 memory:
   bar: true
+  colored_bar?: true
   icon: 
   color: *cyan
   reload: 1
 
 cpu:
   bar: true
+  colored_bar?: true
   icon: 
   color: *yellow
   reload: 1

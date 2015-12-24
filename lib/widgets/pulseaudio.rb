@@ -17,7 +17,7 @@ class PulseAudio
   end
 
   def volume
-    C.bar ? Mkbar[@volume] : "#{@volume}%"
+    C.bar ? Mkbar[@volume, C.colored_bar?] : "#{@volume}%"
   end
 
   def to_s

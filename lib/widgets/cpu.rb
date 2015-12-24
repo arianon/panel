@@ -12,7 +12,7 @@ class CPU
 
   def to_s
     if C.bar
-      "#{@icon} #{Mkbar[@perc]}"
+      "#{@icon} #{Mkbar[@perc, C.colored_bar?]}"
     else
       "#{@icon} #{@perc.round}%"
     end
