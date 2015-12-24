@@ -18,7 +18,7 @@ class CPU
       yield
       prev_used = @used
       prev_total = @total
-      sleep C.rate
+      sleep C.reload
       update!
       @perc = (prev_used - @used) * 100 / (prev_total - @total)
     end

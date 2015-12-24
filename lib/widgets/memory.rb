@@ -32,7 +32,7 @@ class Memory
       loop do
         initialize
         yield
-        sleep C.rate
+        sleep C.reload
       end
   end
 end

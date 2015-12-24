@@ -57,10 +57,10 @@ memory:
   bar: true
   icon: 
   color: *cyan
-  rate: 1
+  reload: 1
 
 cpu:
   bar: true
   icon: 
   color: *yellow
-  rate: 1
+  reload: 1
