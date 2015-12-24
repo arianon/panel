@@ -1,7 +1,8 @@
-#!/usr/bin/env ruby
-# -*- coding: utf-8 -*-
+require_relative '../config'
 
 class MPC
+  C = CONFIG.music
+
   MPDError = Class.new(RuntimeError)
 
   def initialize
@@ -9,27 +10,29 @@ class MPC
     fail MPDError, 'mpd is not running' if @mpc.empty?
   end
 
-  def monitor
-    Thread.new do
-      # Yield ASAP then wait for mpc idleloop to re-init and yield again
-      yield
-      open('| mpc idleloop player options').each_line do
-        update!
-        yield
-      end
-    end
-  end
-
   def song
     mpc = @mpc.split("\n")
-
     mpc.first if mpc.length > 1
   end
 
+  def icon
+    n = paused? ? 1 : 0
+    "%{F#{C.colors[n]}}%{R} #{C.icons[n]} %{R}%{F-} "
+  end
+
+  def to_s
+    return '' if stopped?
+
+    widget = ''
+    buttons = C.buttons.to_h
+
+    widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
+    widget << icon << song
+    widget << '%{A}' * buttons.size
+  end
+
   def status
-    @mpc[/playing|paused/].to_sym
-  rescue
-    :stopped
+    (@mpc[/playing|paused/] || 'stopped').to_sym
   end
 
   %i(playing paused stopped).each do |state|
@@ -44,7 +47,11 @@ class MPC
     end
   end
 
-  def update!
-    initialize
+  def monitor
+    yield
+    open('| mpc idleloop player options').each_line do
+      initialize
+      yield
+    end
   end
 end
