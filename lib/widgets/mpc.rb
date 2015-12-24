@@ -27,7 +27,7 @@ class MPC
     buttons = C.buttons.to_h
 
     widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
-    widget << icon << song << ' '
+    widget << icon << song
     widget << '%{A}' * buttons.size
   end
 

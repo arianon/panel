@@ -14,8 +14,7 @@ class Memory
 
   def to_s
     "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-} " <<
-      (C.bar ? Mkbar[percentage] : "#{percentage.to_i}") <<
-      ' '
+      (C.bar ? Mkbar[percentage] : "#{percentage.to_i}")
   end
 
   def free
