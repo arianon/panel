@@ -36,15 +36,11 @@ class MPC
   end
 
   %i(playing paused stopped).each do |state|
-    define_method(:"#{state}?") do
-      status == state
-    end
+    define_method(:"#{state}?") { status == state }
   end
 
   %i(repeat random single consume).each do |mode|
-    define_method(:"#{mode}?") do
-      @mpc.include? "#{mode}: on"
-    end
+    define_method(:"#{mode}?") { @mpc.include? "#{mode}: on" }
   end
 
   def monitor
