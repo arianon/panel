@@ -1,29 +1,35 @@
-#!/usr/bin/ruby -wU
+require_relative '../config'
 
-module Cpu
-  def self.readstat
-    tmp = open('/proc/stat', &:gets).split[1..-1].map!(&:to_f)
+class CPU
+  C = CONFIG.cpu
 
-    # used = user + system
-    # total = used + idle
-    used = tmp[0] + tmp[2]
-    total = used + tmp[3]
-
-    [used, total]
+  def initialize
+    @perc = 0.0
+    update!
   end
 
-  def self.report(wait)
-    prev_used, prev_total = readstat
-    sleep wait
-    next_used, next_total = readstat
-
-    (prev_used - next_used) * 100 / (prev_total - next_total)
+  def icon
+    "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-}"
   end
 
-  def self.monitor(rate = 0.5)
-    Thread.new do
-      yield 0.0
-      loop { yield report(rate) }
+  def to_s
+    "#{icon} #{@perc.round}%"
+  end
+
+  def monitor
+    loop do
+      yield
+      prev_used = @used
+      prev_total = @total
+      sleep C.rate
+      update!
+      @perc = (prev_used - @used) * 100 / (prev_total - @total)
     end
+  end
+
+  def update!
+    tmp = open('/proc/stat', &:gets).split[1..-1].map!(&:to_f)
+    @used = tmp[0] + tmp[2] # used = user+system
+    @total = @used + tmp[3]  # total = used+idle
   end
 end
