@@ -31,10 +31,10 @@ class Memory
   end
 
   def monitor
-      loop do
-        initialize
-        yield
-        sleep C.reload
-      end
+    loop do
+      initialize
+      yield
+      sleep C.reload
+    end
   end
 end
