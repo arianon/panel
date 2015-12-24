@@ -1,8 +1,8 @@
-class ALSA
-  attr_reader :volume, :muted
-  alias_method :muted?, :muted
+require_relative '../config'
 
+class ALSA
   SCONTROL = 'Master'
+  C = CONFIG.volume
 
   def initialize
     amixer = `amixer sget #{SCONTROL}`
@@ -11,50 +11,28 @@ class ALSA
     @muted = amixer[/\[(on|off)\]/, 1] == 'off'
   end
 
-  def set(vol)
-    @volume = volume
-
-    system "amixer -q sset #{SCONTROL} #{vol}% unmute"
+  def icon
+    n = @muted ? 1 : 0
+    "%{F#{C.colors[n]}}%{R} #{C.icons[n]} %{R}%{F-} "
   end
 
-  def increase(vol)
-    @volume += vol
-    sign = vol > 0 ? '+' : '-'
-
-    system "amixer -q sset #{SCONTROL} #{vol.abs}%#{sign} unmute"
-  end
-
-  def mute
-    @muted = true
-    system "amixer -q sset #{SCONTROL} mute"
-  end
-
-  def unmute
-    @muted = false
-    system "amixer -q sset #{SCONTROL} unmute"
-  end
-
-  def toggle
-    @muted = !@muted
-    system "amixer -q sset #{SCONTROL} toggle"
-  end
-
-  def update!
-    initialize
+  def volume
+    C.bar ? Mkbar[@volume] : "#{@volume}%"
   end
 
   def to_s
-    "#{@volume}:#{@muted ? 'on' : 'off'}"
+    widget = ''
+    buttons = C.buttons.to_h
+
+    widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
+    widget << icon << volume
+    widget << '%{A}' * buttons.size
   end
-end
 
-if __FILE__ == $PROGRAM_NAME
-  volume = ALSA.new
-
-  volume.toggle
-  volume.toggle
-  volume.increase(-15)
-  volume.increase(5)
-  volume.set(100)
-  puts volume
+  def monitor
+    loop do
+      yield
+      sleep C.reload
+    end
+  end
 end
