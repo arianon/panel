@@ -1,3 +1,5 @@
+#!/usr/bin/ruby -wU
+
 require_relative '../config'
 require_relative 'helpers/mkbar'
 
