@@ -32,7 +32,7 @@ mkbar:
 # Widgets
 time:
   icon: 
-  color: &blue
+  color: *blue
   format: "%H:%M:%S"
   rate: 1
 
