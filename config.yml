@@ -24,15 +24,15 @@ lemonbar:
 mkbar:
   char1: ━
   char2: ━
-  size: 20
+  size: 16
   foreground: *foreground
-  background: *background
+  background: *black
 
 # Widgets
 clock:
   icon: 
-  color: *blue
-  format: "%H:%M:%S"
+  color: *magenta
+  format: "%I:%M:%S %p"
   reload: 1
 
 music:
