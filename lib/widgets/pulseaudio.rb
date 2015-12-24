@@ -2,7 +2,7 @@ require_relative '../config'
 require_relative 'helpers/mkbar'
 
 class PulseAudio
-  C = CONFIG.volume
+  C = CONFIG.pulseaudio
 
   def initialize
     pactl = `pactl list sinks`

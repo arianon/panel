@@ -24,7 +24,7 @@ class Rubar
       cpu: CPU.new,
       memory: Memory.new,
       music: MPC.new,
-      volume: PulseAudio.new
+      pulseaudio: PulseAudio.new
     }
 
     @format = parse(C.format)

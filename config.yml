@@ -15,7 +15,7 @@ colors:
 lemonbar:
   foreground: *foreground
   background: *background
-  format: clock|music|cpu memory volume
+  format: clock|music|cpu memory pulseaudio
   fonts:
     - -lucy-tewi-medium-r-normal--11-90-75-75-m-60-iso10646-1
     - -wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1
@@ -44,7 +44,7 @@ music:
     :4: mpc -q prev
     :5: mpc -q next
 
-volume:
+pulseaudio:
   bar: true
   icons: [, ]
   colors: [*green, *red]
