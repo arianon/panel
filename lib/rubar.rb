@@ -19,52 +19,37 @@ class Rubar
 
     @bar = open(cmd, 'w+')
 
-    @clock = Clock.new
-    @cpu = CPU.new
-    @memory = Memory.new
-    @music = MPC.new
-    @volume = PulseAudio.new
+    @widgets = {
+      clock: Clock.new,
+      cpu: CPU.new,
+      memory: Memory.new,
+      music: MPC.new,
+      volume: PulseAudio.new
+    }
 
-    @widgets = [@clock, @cpu, @memory, @music, @volume]
-
-    @mutex = Mutex.new
+    @format = parse(C.format)
   end
 
   def update!
-    @mutex.synchronize do
-      align :left do
-        draw @clock
-      end
-
-      align :center do
-        draw @music
-      end
-
-      align :right do
-        draw @cpu
-        draw @memory
-        draw @volume
-      end
-
-      draw "\n"
-    end
-  end
-
-  def draw(s)
-    @bar.write "#{s}"
-  end
-
-  def align(where)
-    draw "%{#{where[0]}}"
-    yield
+    @bar.write format(@format, @widgets)
+  rescue KeyError
+    raise "The bar's format is malformed!"
   end
 
   def run
-    @widgets.each do |widget|
+    @widgets.each_value do |widget|
       Thread.new { widget.monitor { update! } }
     end
 
     Thread.new { @bar.each_line { |n| system n } }
     sleep
+  end
+
+  private
+
+  def parse(s)
+    s.gsub!(/(\w+)/, '%{\1}')
+      .sub!('|', '%%{c}')
+      .sub!('|', '%%{r}') << " \n"
   end
 end
