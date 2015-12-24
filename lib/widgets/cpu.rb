@@ -5,15 +5,12 @@ class CPU
 
   def initialize
     @perc = 0.0
+    @icon = "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-}"
     update!
   end
 
-  def icon
-    "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-}"
-  end
-
   def to_s
-    "#{icon} #{@perc.round}%"
+    "#{@icon} #{@perc.round}%"
   end
 
   def monitor
