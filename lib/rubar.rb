@@ -2,6 +2,7 @@ Thread.abort_on_exception = true
 
 require_relative 'config'
 
+require_relative 'widgets/alsa'
 require_relative 'widgets/clock'
 require_relative 'widgets/cpu'
 require_relative 'widgets/memory'
@@ -10,6 +11,14 @@ require_relative 'widgets/pulseaudio'
 
 class Rubar
   C = CONFIG.lemonbar
+  WIDGETS = {
+    alsa: ALSA,
+    clock: Clock,
+    cpu: CPU,
+    memory: Memory,
+    music: MPC,
+    pulseaudio: PulseAudio
+  }.freeze
 
   def initialize
     cmd = '| lemonbar '
@@ -19,14 +28,7 @@ class Rubar
 
     @bar = open(cmd, 'w+')
 
-    @widgets = {
-      clock: Clock.new,
-      cpu: CPU.new,
-      memory: Memory.new,
-      music: MPC.new,
-      pulseaudio: PulseAudio.new
-    }
-
+    @widgets = selected_widgets(C.format)
     @format = parse(C.format)
   end
 
@@ -46,6 +48,17 @@ class Rubar
   end
 
   private
+
+  def selected_widgets(s)
+    widgets = WIDGETS.dup
+    widgets
+      .select! { |widget| tokenize(s).include?(widget) }
+      .each { |key, object| widgets[key] = object.new }
+  end
+
+  def tokenize(s)
+    s.split(/[| ]/).map!(&:to_sym)
+  end
 
   def parse(s)
     s.gsub!(/(\w+)/, '%{\1}')
