@@ -23,8 +23,11 @@ class Rubar
   def initialize
     cmd = ['| lemonbar']
     cmd << "-F '#{C.foreground}' -B '#{C.background}'"
+    cmd << "-g #{C.geometry}" if C.geometry
     cmd << C.fonts.map { |f| "-f '#{f}'" }.join(' ')
     cmd << "-a #{C.clickable_areas}"
+    cmd << '-d' if C.force_docking
+    cmd << '-b' if C.bottom
 
     @bar = open(cmd.join(' '), 'w+')
 
