@@ -36,8 +36,8 @@ mkbar:
 clock:
   icon: 
   color: *magenta
-  format: "%I:%M:%S %p"
-  reload: 1
+  format: "%A, %d/%m · %I:%M %p"
+  reload: 60
 
 music:
   icons: [,]
