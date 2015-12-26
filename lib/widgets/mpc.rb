@@ -47,7 +47,7 @@ class MPC
 
   def monitor
     yield
-    open('| mpc idleloop player options').each_line do
+    IO.foreach('| mpc idleloop player options') do
       initialize
       yield
     end

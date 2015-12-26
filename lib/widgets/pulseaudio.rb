@@ -33,7 +33,7 @@ class PulseAudio
 
   def monitor
     yield
-    open('| pactl subscribe change').each_line do |line|
+    IO.foreach('| pactl subscribe change') do |line|
       # Respond only to sink changes
       if line.include? 'sink'
         initialize
