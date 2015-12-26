@@ -3,6 +3,7 @@ Thread.abort_on_exception = true
 require_relative 'config'
 
 require_relative 'widgets/alsa'
+require_relative 'widgets/bandwidth'
 require_relative 'widgets/clock'
 require_relative 'widgets/cpu'
 require_relative 'widgets/memory'
@@ -13,6 +14,7 @@ class Rubar
   C = CONFIG.lemonbar
   WIDGETS = {
     alsa: ALSA,
+    bandwidth: Bandwidth,
     clock: Clock,
     cpu: CPU,
     memory: Memory,

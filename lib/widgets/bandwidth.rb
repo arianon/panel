@@ -1,50 +1,97 @@
 #!/usr/bin/ruby -wU
 # coding: utf-8
 
-module Bandwidth
-  MAXDOWN = 172_000.0
-  MAXUP = 65_536.0
+require_relative '../config'
+require_relative 'helpers/mkbar'
 
-  @prev = [0.0, 0.0, Time.now.to_f]
-  @next = [0.0, 0.0, Time.now.to_f]
+# This is the worst widget class in the whole program.
+# I'm sorry.
 
-  def self.readbandwidth
+class Bandwidth
+  C = CONFIG.bandwidth
+
+  def initialize
+    @icon_down = "%{F#{C.colors[0]}}%{R} #{C.icons[0]} %{R}%{F-}"
+    @icon_up = "%{F#{C.colors[1]}}%{R} #{C.icons[1]} %{R}%{F-}"
+
+    @rx = 0.0
+    @tx = 0.0
+    @time = 0.0
+
+    @percentage = C.percentage
+    @bar = C.percentage && C.percentage.bar rescue nil
+    @colored = @bar == 'colored'
+
+    @downspeed = 0.0
+    @upspeed = 0.0
+
+    if C.percentage
+      @downperc = 0.0
+      @upperc = 0.0
+    end
+
+    update!
+  end
+
+  def to_s
+    if @percentage
+      if @bar
+        "#{@icon_down} #{Mkbar[@downperc, @colored]} #{@icon_up} #{Mkbar[@upperc, @colored]}"
+      else
+        "#{@icon_down} #{@downperc.to_i}% #{@icon_up} #{@upperc.to_i}%"
+      end
+    else
+      "#{@icon_down} #{@downspeed.to_i / 1024}K #{@icon_up} #{@upspeed.to_i / 1024}K"
+    end
+  end
+
+  def update!
     tmp = File.readlines('/proc/net/dev')[2].split
 
-    received = tmp[1].to_i
-    transmitted = tmp[9].to_i
-    timestamp = Time.now.to_f
-
-    [received, transmitted, timestamp]
+    @rx = tmp[1].to_f
+    @tx = tmp[9].to_f
+    @time = Time.now.to_f
   end
 
-  def self.speed
-    delta_t = @next[2] - @prev[2]
-    down = (@next[0] - @prev[0]) / delta_t
-    up = (@next[1] - @prev[1]) / delta_t
+  def speed!
+    prev_rx = @rx
+    prev_tx = @tx
+    prev_time = @time
 
-    [down, up]
+    sleep C.reload
+    update!
+
+    delta_t = @time - prev_time
+    down = (@rx - prev_rx) / delta_t
+    up = (@tx - prev_tx) / delta_t
+
+    @downspeed = down
+    @upspeed = up
   end
 
-  def self.percentage
-    downspd, upspd = speed
+  def percentage!
+    speed!
+    begin
+      maxdown, maxup = @percentage.maxes
+    rescue NoMethodError
+      raise "You must define a 'maxes' key in the 'percentage hash'"
+    end
 
-    down = (downspd / MAXDOWN) * 100
-    up = (upspd / MAXUP) * 100
+    down = (@downspeed / maxdown) * 100
+    up = (@upspeed / maxup) * 100
 
-    [down, up]
+    @downperc = down
+    @upperc = up
   end
 
-  def self.monitor(rate = 1)
-    Thread.new do
-      yield self
-
-      loop do
-        @prev = readbandwidth
-        sleep rate
-        @next = readbandwidth
-
-        yield self
+  def monitor
+    loop do
+      yield
+      update!
+      if @percentage
+        percentage!
+      else
+        speed!
       end
     end
   end
