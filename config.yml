@@ -57,15 +57,13 @@ pulseaudio:
     :5: pactl set-sink-volume 0 -5%
 
 memory:
-  bar: true
-  colored_bar?: true
+  bar: colored
   icon: 
   color: *cyan
   reload: 1
 
 cpu:
-  bar: true
-  colored_bar?: true
+  bar: colored
   icon: 
   color: *yellow
   reload: 1
