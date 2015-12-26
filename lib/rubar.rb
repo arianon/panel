@@ -21,12 +21,12 @@ class Rubar
   }.freeze
 
   def initialize
-    cmd = '| lemonbar '
-    cmd << "-F '#{C.foreground}' -B '#{C.background}' "
-    cmd << C.fonts.map { |f| "-f '#{f}' " }.join
+    cmd = ['| lemonbar']
+    cmd << "-F '#{C.foreground}' -B '#{C.background}'"
+    cmd << C.fonts.map { |f| "-f '#{f}'" }.join(' ')
     cmd << "-a #{C.clickable_areas}"
 
-    @bar = open(cmd, 'w+')
+    @bar = open(cmd.join(' '), 'w+')
 
     @widgets = selected_widgets(C.format)
     @format = parse(C.format)
