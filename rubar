@@ -1,7 +1,5 @@
 #!/usr/bin/ruby -wU
 
-trap('INT') { exit }
-
 require_relative 'lib/rubar'
 
 Rubar.new.run

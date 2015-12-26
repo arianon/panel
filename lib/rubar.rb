@@ -50,6 +50,10 @@ class Rubar
 
     Thread.new { @bar.each_line { |n| system n } }
     sleep
+  rescue Interrupt
+    puts 'Exiting gracefully...'
+    Process.kill('TERM', @bar.pid)
+    exit
   end
 
   private
