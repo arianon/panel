@@ -2,6 +2,7 @@
 
 require_relative '../config'
 require_relative 'helpers/mkbar'
+require_relative 'helpers/iconify'
 
 class Memory
   REGEX = /^(?:MemTotal|MemFree|Buffers|Cached):\s+(\d+) kB/
@@ -16,7 +17,7 @@ class Memory
   end
 
   def to_s
-    "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-} " <<
+    Iconify[C.icon, C.color] <<
       (C.bar ? Mkbar[percentage, C.bar == 'colored'] : "#{percentage.to_i}%")
   end
 

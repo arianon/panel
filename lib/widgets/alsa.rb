@@ -1,5 +1,6 @@
 require_relative '../config'
 require_relative 'helpers/mkbar'
+require_relative 'helpers/iconify'
 
 class ALSA
   SCONTROL = 'Master'
@@ -14,7 +15,7 @@ class ALSA
 
   def icon
     n = @muted ? 1 : 0
-    "%{F#{C.colors[n]}}%{R} #{C.icons[n]} %{R}%{F-} "
+    Iconify[C.icons[n], C.colors[n]]
   end
 
   def volume

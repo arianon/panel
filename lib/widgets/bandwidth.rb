@@ -3,6 +3,7 @@
 
 require_relative '../config'
 require_relative 'helpers/mkbar'
+require_relative 'helpers/iconify'
 
 # This is the worst widget class in the whole program.
 # I'm sorry.
@@ -11,8 +12,8 @@ class Bandwidth
   C = CONFIG.bandwidth
 
   def initialize
-    @icon_down = "%{F#{C.colors[0]}}%{R} #{C.icons[0]} %{R}%{F-}"
-    @icon_up = "%{F#{C.colors[1]}}%{R} #{C.icons[1]} %{R}%{F-}"
+    @icon_down = Iconify[C.icons[0], C.colors[0]]
+    @icon_up = Iconify[C.icons[1], C.colors[1]]
 
     @rx = 0.0
     @tx = 0.0

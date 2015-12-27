@@ -2,6 +2,7 @@
 
 require_relative '../config'
 require_relative 'helpers/mkbar'
+require_relative 'helpers/respond_to'
 
 class PulseAudio
   C = CONFIG.pulseaudio
@@ -15,7 +16,7 @@ class PulseAudio
 
   def icon
     n = @muted ? 1 : 0
-    "%{F#{C.colors[n]}}%{R} #{C.icons[n]} %{R}%{F-} "
+    Iconify[C.icons[n], C.colors[n]]
   end
 
   def volume
@@ -23,12 +24,7 @@ class PulseAudio
   end
 
   def to_s
-    widget = ''
-    buttons = C.buttons.to_h
-
-    widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
-    widget << icon << volume
-    widget << '%{A}' * buttons.size
+    RespondTo[icon << volume, C.buttons]
   end
 
   def monitor

@@ -1,6 +1,8 @@
 #!/usr/bin/ruby -wU
 
 require_relative '../config'
+require_relative 'helpers/iconify'
+require_relative 'helpers/respond_to'
 
 class MPC
   C = CONFIG.music
@@ -19,18 +21,12 @@ class MPC
 
   def icon
     n = paused? ? 1 : 0
-    "%{F#{C.colors[n]}}%{R} #{C.icons[n]} %{R}%{F-} "
+    Iconify[C.icons[n], C.colors[n]]
   end
 
   def to_s
     return '' if stopped?
-
-    widget = ''
-    buttons = C.buttons.to_h
-
-    widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
-    widget << icon << song
-    widget << '%{A}' * buttons.size
+    RespondTo[icon << song, C.buttons]
   end
 
   def status

@@ -1,12 +1,13 @@
 #!/usr/bin/ruby -wU
 
 require_relative '../config'
+require_relative 'helpers/iconify'
 
 class Clock
   C = CONFIG.clock
 
   def initialize
-    @icon = "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-} "
+    @icon = Iconify[C.icon, C.color]
   end
 
   def monitor

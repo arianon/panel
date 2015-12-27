@@ -8,7 +8,7 @@ class CPU
 
   def initialize
     @perc = 0.0
-    @icon = "%{F#{C.color}}%{R} #{C.icon} %{R}%{F-}"
+    @icon = Iconify[C.icon, C.color]
     update!
   end
 
