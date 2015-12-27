@@ -1,3 +1,4 @@
+reversed_icons: true
 # Colors definitions.
 colors:
   background:  &background  '#14181F'
