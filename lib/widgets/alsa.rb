@@ -1,6 +1,7 @@
 require_relative '../config'
 require_relative 'helpers/mkbar'
 require_relative 'helpers/iconify'
+require_relative 'helpers/respond_to'
 
 class ALSA
   SCONTROL = 'Master'
@@ -23,12 +24,7 @@ class ALSA
   end
 
   def to_s
-    widget = ''
-    buttons = C.buttons.to_h
-
-    widget << buttons.map { |btn, cmd| "%{A#{btn}:#{cmd}:}" }.join
-    widget << icon << volume
-    widget << '%{A}' * buttons.size
+    RespondTo[icon << volume]
   end
 
   def monitor
