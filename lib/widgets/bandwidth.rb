@@ -35,14 +35,24 @@ class Bandwidth
   end
 
   def to_s
+    widget = ''
+
+    widget << @icon_down
+
     if @percentage
       if @bar
-        "#{@icon_down} #{Mkbar[@downperc, @colored]} #{@icon_up} #{Mkbar[@upperc, @colored]}"
+        widget << Mkbar[@downperc, @colored]
+        widget << @icon_up
+        widget << Mkbar[@upperc, @colored]
       else
-        "#{@icon_down} #{@downperc.to_i}% #{@icon_up} #{@upperc.to_i}%"
+        widget << "#{@downperc.to_i}%"
+        widget << @icon_up
+        widget << "#{@upperc.to_i}%"
       end
     else
-      "#{@icon_down} #{@downspeed.to_i / 1024}K #{@icon_up} #{@upspeed.to_i / 1024}K"
+      widget << "#{@downspeed.to_i / 1024}K"
+      widget << @icon_up
+      widget << "#{@upspeed.to_i / 1024}K"
     end
   end
 
