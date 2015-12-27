@@ -2,6 +2,7 @@
 
 require_relative '../config'
 require_relative 'helpers/mkbar'
+require_relative 'helpers/iconify'
 
 class CPU
   C = CONFIG.cpu
@@ -13,10 +14,13 @@ class CPU
   end
 
   def to_s
+    widget = ''
+    widget << @icon
+
     if C.bar
-      "#{@icon} #{Mkbar[@perc, C.bar == 'colored']}"
+      widget << Mkbar[@perc, C.bar == 'colored']
     else
-      "#{@icon} #{@perc.round}%"
+      widget << "#{@perc.round}%"
     end
   end
 
