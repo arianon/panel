@@ -20,7 +20,7 @@ class CPU
     if C.bar
       widget << Mkbar[@perc, C.bar == 'colored']
     else
-      widget << "#{@perc.round}%"
+      widget << format('%.1f%%', @perc)
     end
   end
 

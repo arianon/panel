@@ -18,7 +18,7 @@ class Memory
 
   def to_s
     Iconify[C.icon, C.color] <<
-      (C.bar ? Mkbar[percentage, C.bar == 'colored'] : "#{percentage.to_i}%")
+      (C.bar ? Mkbar[percentage, C.bar == 'colored'] : format('%.1f%%', percentage))
   end
 
   def free

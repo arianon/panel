@@ -20,9 +20,9 @@ class Temperature
       when /.*bar/
         Mkbar[curtemp, C.type == 'colored_bar']
       when 'percentage'
-        "#{perctemp.to_i}%"
+        format('%.1f%%', perctemp)
       when 'degrees'
-        "#{curtemp}°C"
+        format('%.1f°C', curtemp)
       end
   end
 
