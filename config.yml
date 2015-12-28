@@ -45,6 +45,7 @@ music:
   colors: [*blue, *red]
   buttons:
     :1: mpc -q toggle
+    :3: mpc seek 0%
     :4: mpc -q prev
     :5: mpc -q next
 
