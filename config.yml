@@ -1,4 +1,4 @@
-reversed_icons: true
+reversed_icons: false
 # Colors definitions.
 colors:
   background:  &background  '#14181F'
@@ -58,13 +58,13 @@ pulseaudio:
     :5: pactl set-sink-volume 0 -5%
 
 memory:
-  bar: colored
+  bar: no
   icon: 
   color: *cyan
   reload: 1
 
 cpu:
-  bar: colored
+  bar: no
   icon: 
   color: *yellow
   reload: 1
