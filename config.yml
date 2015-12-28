@@ -70,10 +70,10 @@ cpu:
   reload: 1
 
 bandwidth:
-  percentage:
-    # your max bytes/s, required to calculate percentage
-    maxes: [172000,65536]
-    bar: true
+  # percentage:
+  #   # your max bytes/s, required to calculate percentage
+  #   maxes: [172000,65536]
+  #   bar: true
   icons: [,]
   colors: [*green,*blue]
   reload: 1
