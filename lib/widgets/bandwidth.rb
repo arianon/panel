@@ -52,53 +52,53 @@ class Bandwidth
   end
 
   def update!
-  tmp = File.readlines('/proc/net/dev')[2].split
+    tmp = File.readlines('/proc/net/dev')[2].split
 
-  @rx = tmp[1].to_f
-  @tx = tmp[9].to_f
-  @time = Time.now.to_f
-end
-
-def speed!
-  prev_rx = @rx
-  prev_tx = @tx
-  prev_time = @time
-
-  sleep C.reload
-  update!
-
-  delta_t = @time - prev_time
-  down = (@rx - prev_rx) / delta_t
-  up = (@tx - prev_tx) / delta_t
-
-  @downspeed = down
-  @upspeed = up
-end
-
-def percentage!
-  speed!
-  begin
-    maxdown, maxup = @percentage.maxes
-  rescue NoMethodError
-    raise "You must define a 'maxes' key in the 'percentage hash'"
+    @rx = tmp[1].to_f
+    @tx = tmp[9].to_f
+    @time = Time.now.to_f
   end
 
-  down = (@downspeed / maxdown) * 100
-  up = (@upspeed / maxup) * 100
+  def speed!
+    prev_rx = @rx
+    prev_tx = @tx
+    prev_time = @time
 
-  @downperc = down
-  @upperc = up
-end
-
-def monitor
-  loop do
-    yield
+    sleep C.reload
     update!
-    if @percentage
-      percentage!
-    else
-      speed!
+
+    delta_t = @time - prev_time
+    down = (@rx - prev_rx) / delta_t
+    up = (@tx - prev_tx) / delta_t
+
+    @downspeed = down
+    @upspeed = up
+  end
+
+  def percentage!
+    speed!
+    begin
+      maxdown, maxup = @percentage.maxes
+    rescue NoMethodError
+      raise "You must define a 'maxes' key in the 'percentage hash'"
+    end
+
+    down = (@downspeed / maxdown) * 100
+    up = (@upspeed / maxup) * 100
+
+    @downperc = down
+    @upperc = up
+  end
+
+  def monitor
+    loop do
+      yield
+      update!
+      if @percentage
+        percentage!
+      else
+        speed!
+      end
     end
   end
-end
 end
