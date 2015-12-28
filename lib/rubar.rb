@@ -8,6 +8,7 @@ require_relative 'widgets/clock'
 require_relative 'widgets/cpu'
 require_relative 'widgets/memory'
 require_relative 'widgets/mpc'
+require_relative 'widgets/temperature'
 require_relative 'widgets/pulseaudio'
 
 class Rubar
@@ -19,6 +20,7 @@ class Rubar
     cpu: CPU,
     memory: Memory,
     music: MPC,
+    temperature: Temperature,
     pulseaudio: PulseAudio
   }.freeze
 

@@ -16,7 +16,7 @@ colors:
 lemonbar:
   foreground: *foreground
   background: *background
-  format: clock bandwidth|music|cpu memory pulseaudio
+  format: clock bandwidth|music|cpu temperature memory pulseaudio
   geometry: 1600x16+0+0
   fonts:
     - -lucy-tewi-medium-r-normal--11-90-75-75-m-60-iso10646-1
@@ -77,4 +77,11 @@ bandwidth:
   #   bar: true
   icons: [,]
   colors: [*green,*blue]
+  reload: 1
+
+temperature:
+  # degrees | percentage | bar | colored_bar
+  type: degrees
+  icon: 
+  color: *red
   reload: 1
