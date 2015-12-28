@@ -39,71 +39,66 @@ class Bandwidth
 
     widget << @icon_down
 
-    if @percentage
-      if @bar
-        widget << Mkbar[@downperc, @colored]
-        widget << @icon_up
-        widget << Mkbar[@upperc, @colored]
+    widget <<
+      if @percentage
+        if @bar
+          format('%s%s%s', Mkbar[@downperc, @colored], @icon_up, Mkbar[@upperc, @colored])
+        else
+          format('%.1f%%%s%.1f%%', @downperc, @icon_up, @upperc)
+        end
       else
-        widget << "#{@downperc.to_i}%"
-        widget << @icon_up
-        widget << "#{@upperc.to_i}%"
+        format('%dK%s%dK', @downspeed / 1024, @icon_up, @upspeed / 1024)
       end
-    else
-      widget << "#{@downspeed.to_i / 1024}K"
-      widget << @icon_up
-      widget << "#{@upspeed.to_i / 1024}K"
-    end
   end
 
   def update!
-    tmp = File.readlines('/proc/net/dev')[2].split
+  tmp = File.readlines('/proc/net/dev')[2].split
 
-    @rx = tmp[1].to_f
-    @tx = tmp[9].to_f
-    @time = Time.now.to_f
+  @rx = tmp[1].to_f
+  @tx = tmp[9].to_f
+  @time = Time.now.to_f
+end
+
+def speed!
+  prev_rx = @rx
+  prev_tx = @tx
+  prev_time = @time
+
+  sleep C.reload
+  update!
+
+  delta_t = @time - prev_time
+  down = (@rx - prev_rx) / delta_t
+  up = (@tx - prev_tx) / delta_t
+
+  @downspeed = down
+  @upspeed = up
+end
+
+def percentage!
+  speed!
+  begin
+    maxdown, maxup = @percentage.maxes
+  rescue NoMethodError
+    raise "You must define a 'maxes' key in the 'percentage hash'"
   end
 
-  def speed!
-    prev_rx = @rx
-    prev_tx = @tx
-    prev_time = @time
+  down = (@downspeed / maxdown) * 100
+  up = (@upspeed / maxup) * 100
 
-    sleep C.reload
+  @downperc = down
+  @upperc = up
+end
+
+def monitor
+  loop do
+    yield
     update!
-
-    delta_t = @time - prev_time
-    down = (@rx - prev_rx) / delta_t
-    up = (@tx - prev_tx) / delta_t
-
-    @downspeed = down
-    @upspeed = up
-  end
-
-  def percentage!
-    speed!
-    begin
-      maxdown, maxup = @percentage.maxes
-    rescue NoMethodError
-      raise "You must define a 'maxes' key in the 'percentage hash'"
-    end
-
-    down = (@downspeed / maxdown) * 100
-    up = (@upspeed / maxup) * 100
-
-    @downperc = down
-    @upperc = up
-  end
-
-  def monitor
-    loop do
-      yield
-      update!
-      if @percentage
-        percentage!
-      else
-        speed!
-      end
+    if @percentage
+      percentage!
+    else
+      speed!
     end
   end
+end
 end
