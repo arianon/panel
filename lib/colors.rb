@@ -1,4 +1,4 @@
-module Xresource
+module Xresources
   ALIASES = {
     black:   { dark: :color0, bright: :color8 },
     red:     { dark: :color1, bright: :color9 },
