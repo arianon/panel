@@ -29,4 +29,8 @@ module Xresources
       define_singleton_method(:"#{tone}#{name}") { send(color) }
     end
   end
+
+  def self.[](method)
+    send(method)
+  end
 end

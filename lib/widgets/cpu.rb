@@ -1,6 +1,7 @@
 #!/usr/bin/ruby -wU
 
 require_relative '../config'
+require_relative '../xresources'
 require_relative 'helpers/mkbar'
 require_relative 'helpers/iconify'
 
@@ -9,7 +10,7 @@ class CPU
 
   def initialize
     @perc = 0.0
-    @icon = Iconify[C.icon, C.color]
+    @icon = Iconify[C.icon, Xresources[C.color]]
     update!
   end
 

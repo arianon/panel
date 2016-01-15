@@ -2,6 +2,7 @@
 # coding: utf-8
 
 require_relative '../config'
+require_relative '../xresources'
 require_relative 'helpers/mkbar'
 require_relative 'helpers/iconify'
 
@@ -12,8 +13,8 @@ class Bandwidth
   C = CONFIG.bandwidth
 
   def initialize
-    @icon_down = Iconify[C.icons[0], C.colors[0]]
-    @icon_up = Iconify[C.icons[1], C.colors[1]]
+    @icon_down = Iconify[C.icons[0], Xresources[C.colors[0]]]
+    @icon_up = Iconify[C.icons[1], Xresources[C.colors[1]]]
 
     @rx = 0.0
     @tx = 0.0

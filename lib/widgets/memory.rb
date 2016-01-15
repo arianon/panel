@@ -17,7 +17,7 @@ class Memory
   end
 
   def to_s
-    Iconify[C.icon, C.color] <<
+    Iconify[C.icon, Xresources[C.color]] <<
       (C.bar ? Mkbar[percentage, C.bar == 'colored'] : format('%.1f%%', percentage))
   end
 

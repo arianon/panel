@@ -21,7 +21,7 @@ class MPC
 
   def icon
     n = paused? ? 1 : 0
-    Iconify[C.icons[n], C.colors[n]]
+    Iconify[C.icons[n], Xresources[C.colors[n]]]
   end
 
   def to_s

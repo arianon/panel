@@ -1,6 +1,7 @@
 Thread.abort_on_exception = true
 
 require_relative 'config'
+require_relative 'xresources'
 
 require_relative 'widgets/alsa'
 require_relative 'widgets/bandwidth'
@@ -26,7 +27,7 @@ class Rubar
 
   def initialize
     cmd = ['| lemonbar']
-    cmd << "-F '#{C.foreground}' -B '#{C.background}'"
+    cmd << "-F '#{Xresources[C.foreground]}' -B '#{Xresources[C.background]}'"
     cmd << "-g #{C.geometry}" if C.geometry
     cmd << C.fonts.map { |f| "-f '#{f}'" }.join(' ')
     cmd << "-a #{C.clickable_areas}"

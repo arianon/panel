@@ -1,25 +1,13 @@
 reversed_icons: false
-# Colors definitions.
-colors:
-  background:  &background  '#14181F'
-  black:       &black       '#2B303B'
-  blue:        &blue        '#8FA1B3'
-  cyan:        &cyan        '#96B5B4'
-  foreground:  &foreground  '#B7BDCC'
-  green:       &green       '#A3BE8C'
-  magenta:     &magenta     '#B48EAD'
-  red:         &red         '#BF616A'
-  white:       &white       '#B9BBBE'
-  yellow:      &yellow      '#EBCB8B'
 
 # Lemonbar's configuration
 lemonbar:
-  foreground: *foreground
-  background: *background
+  foreground: foreground
+  background: background
   format: clock bandwidth|music|cpu temperature memory pulseaudio
-  geometry: 1600x16+0+0
+# geometry: 1600x16+0+0
   fonts:
-    - -lucy-tewi-medium-r-normal--11-90-75-75-m-60-iso10646-1
+    - -arianon-synepis-normal-r-normal--11-80-100-100-c-60-iso10646-1
     - -wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1
   clickable_areas: 10
   bottom: false
@@ -30,19 +18,19 @@ mkbar:
   char1: ━
   char2: ━
   size: 16
-  foreground: *foreground
-  background: *black
+  foreground: :foreground
+  background: :darkblack
 
 # Widgets
 clock:
   icon: 
-  color: *magenta
+  color: :magenta
   format: "%A, %d/%m · %I:%M %p"
   reload: 60
 
 music:
   icons: [,]
-  colors: [*blue, *red]
+  colors: [blue, red]
   buttons:
     :1: mpc -q toggle
     :3: mpc seek 0%
@@ -52,7 +40,7 @@ music:
 pulseaudio:
   bar: true
   icons: [, ]
-  colors: [*green, *red]
+  colors: [green, red]
   buttons:
     :1: pactl set-sink-mute 0 toggle
     :4: pactl set-sink-volume 0 +5%
@@ -61,13 +49,13 @@ pulseaudio:
 memory:
   bar: no
   icon: 
-  color: *cyan
+  color: :cyan
   reload: 1
 
 cpu:
   bar: no
   icon: 
-  color: *yellow
+  color: :yellow
   reload: 1
 
 bandwidth:
@@ -76,12 +64,12 @@ bandwidth:
   #   maxes: [172000,65536]
   #   bar: true
   icons: [,]
-  colors: [*green,*blue]
+  colors: [green, blue]
   reload: 1
 
 temperature:
   # degrees | percentage | bar | colored_bar
   type: degrees
   icon: 
-  color: *red
+  color: :red
   reload: 1

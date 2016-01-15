@@ -8,7 +8,7 @@ class Temperature
 
   def initialize
     @maxtemp = maxtemp
-    @icon = Iconify[C.icon, C.color]
+    @icon = Iconify[C.icon, Xresources[C.color]]
   end
 
   def to_s

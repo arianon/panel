@@ -2,12 +2,12 @@
 # coding: utf-8
 
 require_relative '../../config'
+require_relative '../../xresources'
 
 module Mkbar
   extend self
 
   C = CONFIG.mkbar
-  S = CONFIG.colors
 
   # Forgive calculation errors.
   def wrap(value)
@@ -22,27 +22,27 @@ module Mkbar
 
   def color_by_perc(value)
     if value >= 75
-      S.red
+      Xresources['red']
     elsif value >= 50
-      S.yellow
+      Xresources['yellow']
     elsif value >= 25
-      S.cyan
+      Xresources['cyan']
     else
-      S.green
+      Xresources['green']
     end
   end
 
   def [](value, color = false)
     value = wrap(value)
     bar = ''
-    my_foreground = color ? color_by_perc(value) : C.foreground
+    my_foreground = color ? color_by_perc(value) : Xresources[C.foreground]
 
     value = (value / 100.0 * C.size).round
     remainder = C.size - value
 
     bar << "%{F#{my_foreground}}"
     bar << C.char1 * value
-    bar << "%{F#{C.background}}"
+    bar << "%{F#{Xresources[C.background]}}"
     bar << C.char2 * remainder
     bar << '%{F-}'
   end
