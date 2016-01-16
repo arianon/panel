@@ -21,7 +21,7 @@ class Bandwidth
     @time = 0.0
 
     @percentage = C.percentage
-    @bar = C.percentage && C.percentage.bar rescue nil
+    @bar = C.percentage&.bar
     @colored = @bar == 'colored'
 
     @downspeed = 0.0
