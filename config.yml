@@ -5,7 +5,7 @@ lemonbar:
   foreground: foreground
   background: background
   format: clock bandwidth|music|cpu temperature memory pulseaudio
-# geometry: 1600x16+0+0
+  geometry: 1600x16+0+0
   fonts:
     - -arianon-synepis-normal-r-normal--11-80-100-100-c-60-iso10646-1
     - -wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1
@@ -25,7 +25,7 @@ mkbar:
 clock:
   icon: 
   color: :magenta
-  format: "%A, %d/%m · %I:%M %p"
+  format: "%a %d %b · %I:%M %p"
   reload: 60
 
 music:
