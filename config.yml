@@ -15,8 +15,8 @@ lemonbar:
 
 # Mkbar
 mkbar:
-  char1: ━
-  char2: ━
+  char1: 
+  char2: 
   size: 16
   foreground: :foreground
   background: :darkblack
@@ -29,7 +29,7 @@ clock:
   reload: 60
 
 music:
-  icons: [,]
+  icons: [,]
   colors: [foreground, foreground]
   buttons:
     :1: mpc -q toggle
