@@ -1,4 +1,4 @@
-reversed_icons: false
+reversed_icons: true
 
 # Lemonbar's configuration
 lemonbar:
@@ -24,13 +24,13 @@ mkbar:
 # Widgets
 clock:
   icon: 
-  color: :magenta
+  color: :foreground
   format: "%a %d %b · %I:%M %p"
   reload: 60
 
 music:
   icons: [,]
-  colors: [blue, red]
+  colors: [foreground, foreground]
   buttons:
     :1: mpc -q toggle
     :3: mpc seek 0%
@@ -40,7 +40,7 @@ music:
 pulseaudio:
   bar: true
   icons: [, ]
-  colors: [green, red]
+  colors: [foreground, foreground]
   buttons:
     :1: pactl set-sink-mute 0 toggle
     :4: pactl set-sink-volume 0 +5%
@@ -49,27 +49,27 @@ pulseaudio:
 memory:
   bar: no
   icon: 
-  color: :cyan
+  color: :foreground
   reload: 1
 
 cpu:
   bar: no
   icon: 
-  color: :yellow
+  color: :foreground
   reload: 1
 
 bandwidth:
-  # percentage:
-  #   # your max bytes/s, required to calculate percentage
-  #   maxes: [172000,65536]
-  #   bar: true
+# percentage:
+#   # your max bytes/s, required to calculate percentage
+#   maxes: [172000,65536]
+#   bar: true
   icons: [,]
-  colors: [green, blue]
+  colors: [foreground, foreground]
   reload: 1
 
 temperature:
   # degrees | percentage | bar | colored_bar
   type: degrees
   icon: 
-  color: :red
+  color: :foreground
   reload: 1
