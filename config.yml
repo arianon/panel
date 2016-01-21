@@ -8,7 +8,6 @@ lemonbar:
   geometry: 1600x16+0+0
   fonts:
     - -arianon-synepis-normal-r-normal--11-80-100-100-c-60-iso10646-1
-    - -wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1
   clickable_areas: 10
   bottom: false
   force_docking: false
@@ -23,13 +22,13 @@ mkbar:
 
 # Widgets
 clock:
-  icon: 
+  icon: 
   color: :foreground
   format: "%a %d %b · %I:%M %p"
   reload: 60
 
 music:
-  icons: [,]
+  icons: [, ]
   colors: [foreground, foreground]
   buttons:
     :1: mpc -q toggle
@@ -39,7 +38,7 @@ music:
 
 pulseaudio:
   bar: true
-  icons: [, ]
+  icons: [, ]
   colors: [foreground, foreground]
   buttons:
     :1: pactl set-sink-mute 0 toggle
@@ -48,13 +47,13 @@ pulseaudio:
 
 memory:
   bar: no
-  icon: 
+  icon: 
   color: :foreground
   reload: 1
 
 cpu:
   bar: no
-  icon: 
+  icon: 
   color: :foreground
   reload: 1
 
@@ -63,13 +62,13 @@ bandwidth:
 #   # your max bytes/s, required to calculate percentage
 #   maxes: [172000,65536]
 #   bar: true
-  icons: [,]
+  icons: [, ]
   colors: [foreground, foreground]
   reload: 1
 
 temperature:
   # degrees | percentage | bar | colored_bar
   type: degrees
-  icon: 
+  icon: 
   color: :foreground
   reload: 1
