@@ -39,17 +39,30 @@ class Bandwidth
     widget = ''
 
     widget << @icon_down
-
     widget <<
       if @percentage
         if @bar
-          format('%s%s%s', Mkbar[@downperc, @colored], @icon_up, Mkbar[@upperc, @colored])
+          Mkbar[@downperc, @colored]
         else
-          format('%.1f%%%s%.1f%%', @downperc, @icon_up, @upperc)
+          format('%.1f', @downperc)
         end
       else
-        format('%dK%s%dK', @downspeed / 1024, @icon_up, @upspeed / 1024)
+        format('%dK', @downspeed / 1024)
       end
+
+      widget << ' ' if CONFIG.reversed_icons
+      widget << @icon_up
+
+      widget <<
+        if @percentage
+          if @bar
+            Mkbar[@upperc, @colored]
+          else
+            format('%.1f', @upperc)
+          end
+        else
+          format('%dK', @upspeed / 1024)
+        end
   end
 
   def update!
