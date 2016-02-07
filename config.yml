@@ -1,4 +1,4 @@
-reversed_icons: true
+reversed_icons: false
 
 # Lemonbar's configuration
 lemonbar:
@@ -46,29 +46,27 @@ pulseaudio:
     :5: pactl set-sink-volume 0 -5%
 
 memory:
-  bar: no
+  bar: yes
   icon: 
   color: :foreground
   reload: 1
 
 cpu:
-  bar: no
+  bar: yes
   icon: 
   color: :foreground
   reload: 1
 
 bandwidth:
-    # percentage:
-    # your max bytes/s, required to calculate percentage
-    # maxes: [172000,65536]
-    # bar: false
+  # kilobytes | percentage | bar | colored_bar
+  type: bar
   icons: [, ]
   colors: [foreground, foreground]
   reload: 1
 
 temperature:
   # degrees | percentage | bar | colored_bar
-  type: degrees
+  type: bar
   icon: 
   color: :foreground
   reload: 1

@@ -20,14 +20,17 @@ class Bandwidth
     @tx = 0.0
     @time = 0.0
 
-    @percentage = C.percentage
-    @bar = C.percentage&.bar
-    @colored = @bar == 'colored'
+    @maxupspeed = 1.0
+    @maxdownspeed = 1.0
+
+    @type = C.type
+    @percentage = @type == 'percentage' || @type == 'bar' || @type == 'colored_bar'
+    @colored = @type == 'colored_bar'
 
     @downspeed = 0.0
     @upspeed = 0.0
 
-    if C.percentage
+    if @percentage
       @downperc = 0.0
       @upperc = 0.0
     end
@@ -39,30 +42,24 @@ class Bandwidth
     widget = ''
 
     widget << @icon_down
-    widget <<
-      if @percentage
-        if @bar
-          Mkbar[@downperc, @colored]
-        else
-          format('%.1f', @downperc)
-        end
-      else
-        format('%dK', @downspeed / 1024)
-      end
 
+    case @type
+    when /.*bar/
+      widget << Mkbar[@downperc, @colored]
       widget << ' ' if CONFIG.reversed_icons
       widget << @icon_up
-
-      widget <<
-        if @percentage
-          if @bar
-            Mkbar[@upperc, @colored]
-          else
-            format('%.1f', @upperc)
-          end
-        else
-          format('%dK', @upspeed / 1024)
-        end
+      widget << Mkbar[@upperc, @colored]
+    when 'percentage'
+      widget << format('%.1f', @downperc)
+      widget << ' ' if CONFIG.reversed_icons
+      widget << @icon_up
+      widget << format('%.1f', @upperc)
+    when 'kilobytes'
+      widget << format('%dK', @downspeed / 1024)
+      widget << ' ' if CONFIG.reversed_icons
+      widget << @icon_up
+      widget << format('%dK', @upspeed / 1024)
+    end
   end
 
   def update!
@@ -91,14 +88,13 @@ class Bandwidth
 
   def percentage!
     speed!
-    begin
-      maxdown, maxup = @percentage.maxes
-    rescue NoMethodError
-      raise "You must define a 'maxes' key in the 'percentage hash'"
-    end
 
-    down = (@downspeed / maxdown) * 100
-    up = (@upspeed / maxup) * 100
+    @maxdownspeed = @downspeed if @downspeed > @maxdownspeed
+
+    @maxupspeed = @upspeed if @upspeed > @maxupspeed
+
+    down = (@downspeed / @maxdownspeed) * 100
+    up = (@upspeed / @maxupspeed) * 100
 
     @downperc = down
     @upperc = up
