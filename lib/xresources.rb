@@ -8,14 +8,18 @@ module Xresources
     magenta: { dark: :color5, bright: :color13 },
     cyan:    { dark: :color6, bright: :color14 },
     white:   { dark: :color7, bright: :color15 }
-  }
+  }.freeze
 
-  @db = File.readlines(ENV['HOME'] + '/.Xresources')
-        .select { |line| line =~ /(back|fore)ground|color[0-9]+:/ }
-        .map do |line|
-          *_, name, color = line.split(/[.*:]/)
-          [name.to_sym, color.strip]
-        end.to_h
+  # @db = File.readlines(ENV['HOME'] + '/.Xresources')
+  #     .select { |line| line =~ /(back|fore)ground|color[0-9]+:/ }
+  #     .map do |line|
+  #       *_, name, color = line.split(/[.*:]/)
+  #       [name.to_sym, color.strip]
+  #     end.to_h
+
+  @db = (%i(background foreground) + (0..15).map { |x| :"color#{x}" })
+        .zip(`xrq {back,fore}ground color{0..15}`.split)
+        .to_h
 
   @db.each do |name, value|
     define_singleton_method(name) { value }
