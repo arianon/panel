@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require_relative '../config'
 require_relative 'helpers/mkbar'
 require_relative 'helpers/iconify'
 require_relative 'helpers/respond_to'
 
 class ALSA
-  SCONTROL = 'Master'
+  SCONTROL = 'Master'.freeze
   C = CONFIG.volume
 
   def initialize

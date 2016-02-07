@@ -18,10 +18,10 @@ class CPU
     widget = ''
     widget << @icon
 
-    if C.bar
-      widget << Mkbar[@perc, C.bar == 'colored']
-    else
-      widget << format('%.1f%%', @perc)
+    widget << if C.bar
+                Mkbar[@perc, C.bar == 'colored']
+              else
+                format('%.1f%%', @perc)
     end
   end
 
@@ -39,7 +39,7 @@ class CPU
   def update!
     tmp = open('/proc/stat', &:gets).split[1..-1].map!(&:to_f)
     @used = tmp[0] + tmp[2] # used = user+system
-    @total = @used + tmp[3]  # total = used+idle
+    @total = @used + tmp[3] # total = used+idle
   end
 end
 

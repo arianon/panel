@@ -10,10 +10,10 @@ class Memory
 
   def initialize
     @total, @free, @buffers, @cached = File.read('/proc/meminfo')
-                                       .scan(REGEX)
-                                       .flatten
-                                       .map!(&:to_f)
-                                       .map! { |n| n / 1024 }
+                                           .scan(REGEX)
+                                           .flatten
+                                           .map!(&:to_f)
+                                           .map! { |n| n / 1024 }
   end
 
   def to_s

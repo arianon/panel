@@ -74,7 +74,7 @@ class Rubar
 
   def parse(s)
     s.gsub!(/(\w+)/, '%{\1}')
-      .sub!('|', '%%{c}')
-      .sub!('|', '%%{r}') << " \n"
+     .sub!('|', '%%{c}')
+     .sub!('|', '%%{r}') << " \n"
   end
 end
