@@ -25,6 +25,8 @@ class Rubar
     pulseaudio: PulseAudio
   }.freeze
 
+  attr_accessor :bar
+
   def initialize
     cmd = ['| lemonbar']
     cmd << "-F '#{Xresources[C.foreground]}' -B '#{Xresources[C.background]}'"
@@ -54,6 +56,10 @@ class Rubar
     Thread.new { @bar.each_line { |n| system n } }
     sleep
   rescue Interrupt
+    close!
+  end
+
+  def close!
     puts 'Exiting gracefully...'
     Process.kill('TERM', @bar.pid)
     exit
