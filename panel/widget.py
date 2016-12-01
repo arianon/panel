@@ -4,7 +4,7 @@ class Widget:
         self.text = ''
         self.color = ''
         self.background = ''
-        self.border = {'color': '', 
+        self.border = {'color': '',
                        'top': 0, 'right': 0, 'bottom': 0, 'left': 0}
 
         self._icon_meta = {
