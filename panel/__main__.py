@@ -58,7 +58,7 @@ async def consume(*producers):
             await queue.put({name: w})
 
             exc_info = traceback.format_exc().strip()
-            line = '—' * len(max(exc_info.split('\n'), key=len))
+            line = '—' * max(map(len, exc_info.splitlines()))
 
             print(line, exc_info, line, sep='\n', file=sys.stderr)
 
