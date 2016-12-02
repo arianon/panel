@@ -1,3 +1,4 @@
+from contextlib import closing
 from io import StringIO
 
 
@@ -6,18 +7,14 @@ def mkbar(value):
     value = round(value / 100 * 16)
     remainder = 16 - value
 
-    output = StringIO()
+    with closing(StringIO()) as output:
+        if value > 0:
+            # output.write('<b>')
+            output.write('—' * value)
+            # output.write('</b>')
+        if remainder > 0:
+            output.write('<span foreground="#2a2a2a">')
+            output.write('—' * remainder)
+            output.write('</span>')
 
-    if value > 0:
-        # output.write('<b>')
-        output.write('—' * value)
-        # output.write('</b>')
-    if remainder > 0:
-        output.write('<span foreground="#2a2a2a">')
-        output.write('—' * remainder)
-        output.write('</span>')
-
-    value = output.getvalue()
-    output.close()
-
-    return value
+        return output.getvalue()
