@@ -1,4 +1,3 @@
-from contextlib import closing
 from io import StringIO
 
 
@@ -7,7 +6,7 @@ def mkbar(value):
     value = round(value / 100 * 16)
     remainder = 16 - value
 
-    with closing(StringIO()) as output:
+    with StringIO() as output:
         if value > 0:
             # output.write('<b>')
             output.write('—' * value)
