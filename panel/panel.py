@@ -21,7 +21,7 @@ async def start():
     """
 
     def write(*args, **kwargs):
-        print(json.dumps(*args), **kwargs)
+        print(json.dumps(*args, indent=2), **kwargs)
 
     write({'version': 1})
 

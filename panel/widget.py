@@ -19,7 +19,9 @@ class Widget:
 
     @property
     def icon(self):
-        fmt = '<span foreground="{foreground}" background="{background}">{value}</span>'
+        fmt = '<span foreground={foreground!r} background={background!r}>'\
+              '{value}'\
+              '</span>'
 
         return fmt.format(**self._icon_meta)
 

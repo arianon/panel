@@ -1,8 +1,4 @@
-from asyncio.subprocess import (
-    create_subprocess_exec as aiopopen,
-    PIPE
-)
-
+from ..utils import aiopopen
 from ..widget import Widget
 
 
@@ -34,16 +30,13 @@ async def music():
         yield widget
 
 async def _mpd_listener():
-    try:
-        idleloop = await aiopopen('mpc', 'idleloop', 'player', stdout=PIPE)
+    idleloop = await aiopopen('mpc idleloop player')
 
-        while True:
-            proc = await aiopopen('mpc', stdout=PIPE)
-            stdout = await proc.stdout.read()
-            stdout = stdout.decode()
+    while True:
+        proc = await aiopopen('mpc')
+        stdout = await proc.stdout.read()
+        stdout = stdout.decode()
 
-            yield stdout
+        yield stdout
 
-            await idleloop.stdout.readline()
-    finally:
-        idleloop.kill()
+        await idleloop.stdout.readline()
