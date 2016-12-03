@@ -52,7 +52,7 @@ async def consume(*producers):
             raise
         except Exception as ex:
             w = Widget()
-            w.text = ' {} => {} '.format(ex.__class__.__name__, ex)
+            w.text = '{} => {}'.format(type(ex).__name__, ex)
             w.border['color'] = 'red'
             w.border['bottom'] = 2
             await queue.put({name: w})
@@ -79,6 +79,8 @@ def main():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(start())
     except KeyboardInterrupt:
+        sys.exit(130)
+    finally:
         pending = asyncio.Task.all_tasks()
         gathered = asyncio.gather(*pending)
 
@@ -88,8 +90,8 @@ def main():
             gathered.exception()
         except CancelledError:
             pass
-    finally:
-        loop.close()
+        finally:
+            loop.close()
 
 
 if __name__ == '__main__':

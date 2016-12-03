@@ -1,9 +1,11 @@
 import re
-from asyncio import create_subprocess_exec as aiopopen
-from asyncio.subprocess import PIPE
+from asyncio.subprocess import (
+    create_subprocess_exec as aiopopen,
+    PIPE
+)
 
 from .widget import Widget
-from .utils import mkbar
+# from .utils import mkbar
 
 async def volume():
     """
@@ -28,7 +30,7 @@ async def volume():
         else:
             widget.icon_color()  # Set back to default
 
-        widget.text = mkbar(vol)
+        widget.text = '{}%'.format(vol)
 
         yield widget
 
@@ -39,15 +41,15 @@ async def _pulseaudio_listener():
 
         async def pactl():
             proc = await aiopopen('pactl', 'list', 'sinks', stdout=PIPE)
-            pactl = await proc.stdout.read()
-            return pactl.decode()
+            stdout = await proc.stdout.read()
+            return stdout.decode()
 
         yield await pactl()
 
         while True:
             message = await sub.stdout.readline()
 
-            # Only care about messages about the sink.
+            # Only care about volume events.
             if b'sink' in message:
                 yield await pactl()
     finally:
