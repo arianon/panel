@@ -1,5 +1,7 @@
-from asyncio import create_subprocess_exec as aiopopen
-from asyncio.subprocess import PIPE
+from asyncio.subprocess import (
+    create_subprocess_exec as aiopopen,
+    PIPE
+)
 
 from .widget import Widget
 
@@ -15,7 +17,7 @@ async def music():
     char_limit = 50
 
     async for mpc in _mpd_listener():
-        song = mpc.split('\n')[0]
+        song = mpc.splitlines()[0]
 
         if len(song) > char_limit:
             song = song[:char_limit - 1] + '…'
@@ -37,10 +39,10 @@ async def _mpd_listener():
 
         while True:
             proc = await aiopopen('mpc', stdout=PIPE)
-            mpc = await proc.stdout.read()
-            mpc = mpc.decode()
+            stdout = await proc.stdout.read()
+            stdout = stdout.decode()
 
-            yield mpc
+            yield stdout
 
             await idleloop.stdout.readline()
     finally:
