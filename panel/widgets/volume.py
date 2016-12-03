@@ -4,7 +4,7 @@ from asyncio.subprocess import (
     PIPE
 )
 
-from .widget import Widget
+from ..widget import Widget
 # from .utils import mkbar
 
 async def volume():

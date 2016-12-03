@@ -2,7 +2,7 @@ from time import strftime
 from datetime import datetime
 from asyncio import sleep
 
-from .widget import Widget
+from ..widget import Widget
 
 
 async def clock():

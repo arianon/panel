@@ -1,7 +1,8 @@
+from json import loads
 from asyncio import sleep
 import aiohttp
 
-from .widget import Widget
+from ..widget import Widget
 
 async def bitcoin():
     """
@@ -23,4 +24,5 @@ async def bitcoin():
 async def _fetch(*args, **kwargs):
     async with aiohttp.ClientSession() as session:
         async with session.get(*args, **kwargs) as response:
-            return await response.json()
+            data = await response.text()
+            return loads(data)

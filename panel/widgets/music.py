@@ -3,7 +3,7 @@ from asyncio.subprocess import (
     PIPE
 )
 
-from .widget import Widget
+from ..widget import Widget
 
 
 async def music():
