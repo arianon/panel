@@ -1,4 +1,4 @@
-from ..utils import aiopopen
+from ..utils import aiopopen, check_output
 from ..widget import Widget
 
 
@@ -12,7 +12,7 @@ async def music():
 
     char_limit = 50
 
-    async for mpc in _mpd_listener():
+    async for mpc in _mpc_listener():
         song = mpc.splitlines()[0]
 
         if len(song) > char_limit:
@@ -29,14 +29,8 @@ async def music():
 
         yield widget
 
-async def _mpd_listener():
-    idleloop = await aiopopen('mpc idleloop player')
+async def _mpc_listener():
+    yield await check_output('mpc')
 
-    while True:
-        proc = await aiopopen('mpc')
-        stdout = await proc.stdout.read()
-        stdout = stdout.decode()
-
-        yield stdout
-
-        await idleloop.stdout.readline()
+    async for _ in aiopopen('mpc idleloop player'):
+        yield await check_output('mpc')

@@ -1,6 +1,6 @@
 import re
 
-from ..utils import aiopopen
+from ..utils import aiopopen, check_output
 from ..widget import Widget
 
 
@@ -33,18 +33,9 @@ async def volume():
 
 
 async def _pulseaudio_listener():
-    sub = await aiopopen('pactl subscribe')
+    yield await check_output('pactl list sinks')
 
-    async def pactl():
-        proc = await aiopopen('pactl list sinks')
-        stdout = await proc.stdout.read()
-        return stdout.decode()
-
-    yield await pactl()
-
-    while True:
-        message = await sub.stdout.readline()
-
+    async for message in aiopopen('pactl subscribe'):
         # Only care about volume events.
-        if b'sink' in message:
-            yield await pactl()
+        if 'sink' in message:
+            yield await check_output('pactl list sinks')
