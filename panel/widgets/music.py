@@ -33,5 +33,5 @@ async def _mpc_listener():
     async with aiopopen('mpc idleloop player') as idleloop:
         yield await check_output('mpc')
 
-        async for _ in idleloop:
+        async for _event in idleloop:
             yield await check_output('mpc')

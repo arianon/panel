@@ -36,7 +36,7 @@ async def _pulseaudio_listener():
     async with aiopopen('pactl subscribe') as pactl:
         yield await check_output('pactl list sinks')
 
-        async for message in pactl:
+        async for event in pactl:
             # Only care about volume events.
-            if 'sink' in message:
+            if 'sink' in event:
                 yield await check_output('pactl list sinks')
