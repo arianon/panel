@@ -30,7 +30,8 @@ async def music():
         yield widget
 
 async def _mpc_listener():
-    yield await check_output('mpc')
-
-    async for _ in aiopopen('mpc idleloop player'):
+    async with aiopopen('mpc idleloop player') as idleloop:
         yield await check_output('mpc')
+
+        async for _ in idleloop:
+            yield await check_output('mpc')

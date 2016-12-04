@@ -6,9 +6,9 @@ def aiopopen(cmd):
     return _AIOPopen(cmd)
 
 async def check_output(cmd, **kwargs):
-    async with aiopopen(cmd, **kwargs) as proc:
-        stdout = await proc.stdout.read()
-        return stdout.decode()
+    async with aiopopen(cmd, **kwargs) as aio:
+        output = await aio.proc.stdout.read()
+        return output.decode()
 
 class _AIOPopen:
     def __init__(self, cmd, **kwargs):
@@ -17,8 +17,9 @@ class _AIOPopen:
         self.coro = create_subprocess_exec(*args, **kwargs, stdout=PIPE)
 
     def __await__(self):
-        proc = yield from self.coro
-        return proc
+        if not self.proc:
+            self.proc = yield from self.coro
+        return self
 
     def __aiter__(self):
         return self
@@ -36,16 +37,14 @@ class _AIOPopen:
             raise StopAsyncIteration
 
     async def __aenter__(self):
-        if not self.proc:
-            self.proc = await self.coro
-
-        return self.proc
+        return await self
 
     async def __aexit__(self, *args):
         try:
             self.proc.terminate()
         except ProcessLookupError:
             pass
+
 
 def mkbar(value):
     value = max(min(value, 100), 0)
