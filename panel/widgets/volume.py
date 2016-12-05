@@ -1,6 +1,6 @@
 import re
 
-from ..utils import aiopopen, check_output
+from ..utils import aiopopen, check_output, mkbar
 from ..widget import Widget
 
 
@@ -27,7 +27,7 @@ async def volume():
         else:
             widget.icon_color()  # Set back to default
 
-        widget.text = '{}%'.format(vol)
+        widget.text = mkbar(vol)
 
         yield widget
 

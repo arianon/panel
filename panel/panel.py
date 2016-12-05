@@ -41,6 +41,25 @@ async def consume(*producers):
     state = defaultdict(Widget)
     queue = asyncio.Queue()
 
+    def exception_widget(ex):
+        from xml.sax.saxutils import escape
+
+        widget = Widget()
+        template = "<span background='red'>{}</span>: {}"
+
+        name, text = type(ex).__name__, escape(str(ex))
+
+        widget.text = template.format(name, text)
+
+        return widget
+
+    def print_exception():
+        exc_info = traceback.format_exc().strip()
+
+        line = '—' * max(map(len, exc_info.splitlines()))
+
+        print(line, exc_info, line, sep='\n', file=sys.stderr)
+
     async def consume_agen(agen):
         name = agen.__name__
 
@@ -50,16 +69,9 @@ async def consume(*producers):
         except (KeyboardInterrupt, asyncio.CancelledError):
             raise
         except Exception as ex:
-            w = Widget()
-            w.text = '{} => {}'.format(type(ex).__name__, ex)
-            w.border['color'] = 'red'
-            w.border['bottom'] = 2
-            await queue.put({name: w})
+            await queue.put({name: exception_widget(ex)})
 
-            exc_info = traceback.format_exc().strip()
-            line = '—' * max(map(len, exc_info.splitlines()))
-
-            print(line, exc_info, line, sep='\n', file=sys.stderr)
+            print_exception()
 
     for agen in producers:
         asyncio.ensure_future(consume_agen(agen))
@@ -67,4 +79,5 @@ async def consume(*producers):
     while True:
         state.update(await queue.get())
 
-        yield [state[prod.__name__].to_dict() for prod in producers]
+        yield [state[prod.__name__].to_dict()
+               for prod in producers]
