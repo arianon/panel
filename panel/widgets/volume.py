@@ -12,12 +12,7 @@ async def volume():
     widget = Widget()
     widget.icon = ' VOL '
 
-    async for pactl in _pulseaudio_listener():
-        vol = re.search(r'([0-9]+)%', pactl).group(1)
-        vol = int(vol)
-
-        muted = 'Mute: yes' in pactl
-
+    async for vol, muted in _pulseaudio_listener():
         # Prevent fuck ups.
         if vol > 100:
             await aiopopen('pactl set-sink-volume 0 100%')
@@ -33,10 +28,18 @@ async def volume():
 
 
 async def _pulseaudio_listener():
+    async def info():
+        output = await check_output('pactl list sinks')
+        vol = int(re.search(r'([0-9]+)%', output).group(1))
+        muted = 'Mute: yes' in output
+
+        return (vol, muted)
+
+
     async with aiopopen('pactl subscribe') as pactl:
-        yield await check_output('pactl list sinks')
+        yield await info()
 
         async for event in pactl:
             # Only care about volume events.
             if 'sink' in event:
-                yield await check_output('pactl list sinks')
+                yield await info()
