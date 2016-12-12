@@ -10,7 +10,6 @@ from .widgets import *
 PRODUCERS = (
     music,
     volume,
-    bitcoin,
     calendar,
     clock
 )
@@ -29,7 +28,7 @@ async def start():
     print('[[],')
 
     async for widgets in consume(*PRODUCERS):
-        write(widgets, end=',\n', flush=True)
+        write(widgets, end=',', flush=True)
 
 
 async def consume(*producers):
