@@ -45,12 +45,12 @@ async def _mpd_listener(host='localhost', port=6600):
         writer.write((cmd + '\n').encode())
 
         try:
-            data = await reader.readuntil(b'OK')
+            data = await reader.readuntil(b'OK\n')
         except asyncio.IncompleteReadError:
             return None
         else:
             data = data.decode().strip('OK\n').splitlines()
-            return dict(kv.split(': ') for kv in data)
+            return dict(info.split(': ', 1) for info in data)
 
     async def info():
         song = await command('currentsong')
@@ -62,7 +62,8 @@ async def _mpd_listener(host='localhost', port=6600):
         return ('{Artist} - {Title}'.format(**song), status['state'])
 
     yield await info()
-    while 1:
+
+    while True:
         event = await command('idle player')
 
         if not event:
