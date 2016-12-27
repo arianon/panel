@@ -19,11 +19,9 @@ class Widget:
 
     @property
     def icon(self):
-        fmt = '<span foreground={foreground!r} background={background!r}>'\
-              '{value}'\
-              '</span>'
+        fg, bg, value = self._icon_meta.values()
 
-        return fmt.format(**self._icon_meta)
+        return f'<span foreground={fg!r} background={bg!r}>{value}</span>'
 
     @icon.setter
     def icon(self, value):
@@ -36,7 +34,7 @@ class Widget:
     @property
     def full_text(self):
         if self._icon_meta['value'] and self.text:
-            return self.icon + ' ' + self.text
+            return f'{self.icon} {self.text}'
         else:
             return self.text
 

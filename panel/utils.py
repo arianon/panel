@@ -2,15 +2,19 @@ from asyncio.subprocess import create_subprocess_exec, PIPE
 from shlex import split
 from io import StringIO
 
+
 def aiopopen(cmd):
     return _AIOPopen(cmd)
+
 
 async def check_output(cmd, **kwargs):
     async with aiopopen(cmd, **kwargs) as aio:
         output = await aio.proc.stdout.read()
         return output.decode()
 
+
 class _AIOPopen:
+
     def __init__(self, cmd, **kwargs):
         self._cmd = cmd
         self._proc = None
@@ -22,7 +26,7 @@ class _AIOPopen:
         if self._proc is not None:
             return self._proc
         else:
-            raise RuntimeError('{} was never awaited!'.format(repr(self)))
+            raise RuntimeError(f'{self!r} was never awaited!')
 
     def __await__(self):
         if not self._proc:
@@ -51,7 +55,7 @@ class _AIOPopen:
             pass
 
     def __repr__(self):
-        return '<AIOPopen({!r})>'.format(self._cmd)
+        return f'<AIOPopen({self._cmd!r})>'
 
 
 def mkbar(value):

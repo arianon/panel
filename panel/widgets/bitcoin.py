@@ -15,7 +15,7 @@ async def bitcoin():
         data = await _fetch('http://api.bitven.com/prices')
         price = data['USD_TO_BSF_RATE']
 
-        widget.text = "{:0.0f} Bs".format(price)
+        widget.text = f"{round(price)} Bs"
 
         yield widget
 

@@ -35,7 +35,6 @@ async def _pulseaudio_listener():
 
         return (vol, muted)
 
-
     async with aiopopen('pactl subscribe') as pactl:
         yield await info()
 

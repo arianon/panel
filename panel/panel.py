@@ -44,11 +44,9 @@ async def consume(*producers):
         from xml.sax.saxutils import escape
 
         widget = Widget()
-        template = "<span background='red'>{}</span>: {}"
 
         name, text = type(ex).__name__, escape(str(ex))
-
-        widget.text = template.format(name, text)
+        widget.text = f"<span background='red'>{name}</span>: {text}"
 
         return widget
 

@@ -3,6 +3,7 @@
 import asyncio
 import sys
 
+
 def main():
     """
     Initialize the event loop and clean up when exitting.

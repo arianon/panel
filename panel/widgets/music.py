@@ -59,7 +59,7 @@ async def _mpd_listener(host='localhost', port=6600):
         if not song or not status:
             return sentinel
 
-        return ('{Artist} - {Title}'.format(**song), status['state'])
+        return (f"{song['Artist']} - {song['Title']}", status['state'])
 
     yield await info()
 
