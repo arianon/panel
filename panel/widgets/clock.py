@@ -28,7 +28,7 @@ async def calendar():
     widget.icon = ' DATE '
 
     while True:
-        widget.text = strftime('%a %d %b')
+        widget.text = strftime('%A, %B %d')
 
         yield widget
 

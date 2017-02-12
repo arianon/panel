@@ -14,8 +14,8 @@ async def volume():
 
     async for vol, muted in _pulseaudio_listener():
         # Prevent fuck ups.
-        if vol > 100:
-            await aiopopen('pactl set-sink-volume 0 100%')
+        # if vol > 100:
+        #     await aiopopen('pactl set-sink-volume 0 100%')
 
         if muted:
             widget.icon_color(background='#d54e53')

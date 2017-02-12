@@ -10,9 +10,11 @@ from .widgets import *
 PRODUCERS = (
     music,
     volume,
+    memory,
     calendar,
     clock
 )
+
 
 async def start():
     """
