@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const { json, dispatch } = require("../lib")
+
+console.log(json({ version: 1 }))
+console.log("[[],")
+
+dispatch()

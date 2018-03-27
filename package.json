@@ -1,0 +1,17 @@
+{
+  "name": "panel",
+  "private": true,
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "bin": "bin/panel",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "uuid": "^3.2.1",
+    "node-fetch": "^2.1.2",
+    "moment": "^2.21.0"
+  },
+  "author": "arianon",
+  "license": "ISC"
+}
